@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.StockDetailFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/material_blue_500"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            app:columnCount="2">
+
+            <TextView
+                android:id="@+id/stock_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingTop="@dimen/detail_margin"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textSize="@dimen/detail_symbol_size"
+                app:layout_columnSpan="2"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                app:layout_columnSpan="2"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1">
+
+                <TextView
+                    android:id="@+id/stock_bid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|center_vertical"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textSize="@dimen/detail_bid_size" />
+
+                <TextView
+                    android:id="@+id/stock_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/stock_bid"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:paddingTop="@dimen/detail_vertical_padding"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textSize="@dimen/detail_bid_size"
+                    tools:ignore="RelativeOverlap" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/stock_5day_chart"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/material_default_padding"
+                android:text="@string/stock_5day_chart"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="@dimen/detail_chart_title_size" />
+        </android.support.v7.widget.GridLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.db.chart.view.LineChartView xmlns:chart="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/linechart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Line Chart of the stock over past month"
+                android:padding="@dimen/material_default_padding"
+                chart:chart_axisColor="@android:color/white"
+                chart:chart_fontSize="@dimen/detail_chart_size"
+                chart:chart_labelColor="@color/material_yellow_700" />
+        </FrameLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
