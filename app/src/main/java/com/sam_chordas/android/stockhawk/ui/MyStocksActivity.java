@@ -9,13 +9,11 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,13 +38,6 @@ import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallb
 public class MyStocksActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
     private String LOG_TAG = MyStocksActivity.class.getSimpleName();
     private CharSequence mTitle;
     private Intent mServiceIntent;
@@ -67,6 +58,10 @@ public class MyStocksActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+        }
+
         ConnectivityManager cm =
                 (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -86,9 +81,8 @@ public class MyStocksActivity extends AppCompatActivity implements
                 networkToast();
             }
         }
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        //CustomRecyclerView recyclerView = (CustomRecyclerView) findViewById(R.id.recycler_view);
-        //recyclerView.setEmptyView(findViewById(R.id.recycler_view_empty));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
 
@@ -106,13 +100,11 @@ public class MyStocksActivity extends AppCompatActivity implements
                 }));
         recyclerView.setAdapter(mCursorAdapter);
 
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.attachToRecyclerView(recyclerView);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(LOG_TAG, "add new stock");
                 if (isConnected) {
                     new MaterialDialog.Builder(mContext).title(R.string.symbol_search)
                             .content(R.string.content_test)
@@ -125,10 +117,9 @@ public class MyStocksActivity extends AppCompatActivity implements
                                     Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                                             new String[]{QuoteColumns.SYMBOL}, QuoteColumns.SYMBOL + "= ?",
                                             new String[]{input.toString()}, null);
-                                    Log.d("STOCKACTIVITY", "COUNT: " + c.getCount());
                                     if (c.getCount() != 0) {
                                         Toast toast =
-                                                Toast.makeText(MyStocksActivity.this, "This stock is already saved!",
+                                                Toast.makeText(MyStocksActivity.this, getString(R.string.fab_toast),
                                                         Toast.LENGTH_LONG);
                                         toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                                         toast.show();
@@ -186,17 +177,9 @@ public class MyStocksActivity extends AppCompatActivity implements
         Toast.makeText(mContext, getString(R.string.network_toast), Toast.LENGTH_SHORT).show();
     }
 
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.my_stocks, menu);
-        restoreActionBar();
         return true;
     }
 

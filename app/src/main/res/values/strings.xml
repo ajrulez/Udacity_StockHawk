@@ -10,10 +10,9 @@
     <string name="input_hint">FB</string>
     <string name="input_prefill"></string>
     <string name="network_toast">Uh-oh! This app requires an internet connection</string>
-    <string name="invalid_input_toast">Invalid stock input. Please try again.</string>
 
-    <string name="empty_stock_list">"No Stock Information Available"</string>
-    <string name="empty_stock_list_no_network">No stock information available. The network is not available to fetch stock data.</string>
+    <string name="invalid_input_toast">Invalid stock input. Please try again.</string>
+    <string name="fab_toast">This stock is already saved!</string>
 
     <string name="symbol">symbol</string>
     <string name="existing_stock">"This stock is already saved!"</string>

@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +43,12 @@ public class StockDetailFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSymbol = getArguments().getString(DETAIL_SYMBOL);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (activity.getActionBar() != null) {
+            activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
@@ -65,8 +71,6 @@ public class StockDetailFragment extends Fragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.d(LOG_TAG, "oncreateLoader & id: " + id);
-
         if (id == CURSOR_LOADER_ID) {
             return new CursorLoader(getContext(), QuoteProvider.Quotes.CONTENT_URI,
                     new String[]{QuoteColumns._ID, QuoteColumns.SYMBOL, QuoteColumns.BIDPRICE,
@@ -85,8 +89,6 @@ public class StockDetailFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d(LOG_TAG, "onLoaderFinished: " + data.getCount());
-        Log.d(LOG_TAG, "loader id: " + loader.getId());
         if (loader.getId() == CURSOR_LOADER_ID && data != null && data.moveToFirst()) {
             String symbol = data.getString(data.getColumnIndex(QuoteColumns.SYMBOL));
             mStockSymbolView.setText(symbol);
@@ -97,7 +99,6 @@ public class StockDetailFragment extends Fragment
             String showedChange = Utils.truncateChange(change, false) + "(" +
                     Utils.truncateChange(percentChange, true) + ")";
             mStockChangeView.setText(showedChange);
-            Log.d(LOG_TAG, "onloader finished" + symbol + bidPrice + showedChange);
         } else if (loader.getId() == CURSOR_LOADER_HISTORY_ID && data != null && data.moveToFirst()) {
             showChart(data);
         }
@@ -111,14 +112,11 @@ public class StockDetailFragment extends Fragment
         float minBidPrice = Float.MAX_VALUE;
         float maxBidPrice = Float.MIN_VALUE;
         LineSet lineSet = new LineSet();
-        Log.d(LOG_TAG, "data.size: " + data.getCount());
 
         for (data.moveToLast(); !data.isBeforeFirst(); data.moveToPrevious()) {
-            Log.d(LOG_TAG, "TEST");
             String date = data.getString(data.getColumnIndex(QuoteHistoricalColumns.DATE));
             String bidPrice = data.getString(data.getColumnIndex(QuoteHistoricalColumns.BIDPRICE));
             float price = Float.parseFloat(bidPrice);
-            Log.d(LOG_TAG, "date price: " + date + bidPrice);
             lineSet.addPoint(date, price);
             minBidPrice = Math.min(minBidPrice, price);
             maxBidPrice = Math.max(maxBidPrice, price);

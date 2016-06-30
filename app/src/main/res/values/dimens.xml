@@ -11,6 +11,7 @@
     <dimen name="material_default_padding">16dp</dimen>
     <dimen name="detail_vertical_padding">12dp</dimen>
 
+    <dimen name="connection_layout">24sp</dimen>
     <dimen name="detail_symbol_size">36sp</dimen>
     <dimen name="detail_bid_size">24sp</dimen>
     <dimen name="detail_chart_title_size">20sp</dimen>
